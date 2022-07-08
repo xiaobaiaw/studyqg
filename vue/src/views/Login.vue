@@ -11,7 +11,7 @@
         </el-form-item>
         <el-form-item style="margin: 10px 0; text-align: right">
           <el-button type="primary" size="small"  autocomplete="off" @click="login">登录</el-button>
-          <el-button type="warning" size="small"  autocomplete="off">注册</el-button>
+          <el-button type="warning" size="small"  autocomplete="off" @click="$router.push('/register')">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -39,19 +39,18 @@
     methods: {
       login() {
         this.$refs['userForm'].validate((valid) => {
-          if (valid) {
-            this.request.post("http://localhost:9090/user/login",this.user).then(res => {
+          if (valid) {  // 表单校验合法
+            this.request.post("http://localhost:9090/user/login", this.user).then(res => {
               if (res.code === '200') {
-                localStorage.setItem("user",JSON.stringify(res.data))//储存用户信息到浏览器
+                localStorage.setItem("user", JSON.stringify(res.data))  // 存储用户信息到浏览器
                 this.$router.push("/")
-                this.$message.success("登陆成功")
-              }else {
+                this.$message.success("登录成功")
+              } else {
                 this.$message.error(res.msg)
               }
             })
           }
         });
-
       }
     }
   }
