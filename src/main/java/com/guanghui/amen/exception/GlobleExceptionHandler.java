@@ -10,8 +10,8 @@ public class GlobleExceptionHandler {
 
     @ExceptionHandler(ServiiceException.class)
     @ResponseBody
-    public Result handle(ServiiceException se){
-        return Result.error(se.getCode(),se.getMessage());
+    public Result handle(ServiiceException se) {
+        return Result.error(se.getCode(), se.getMessage());
     }
 
 

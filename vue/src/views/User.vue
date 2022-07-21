@@ -21,10 +21,8 @@
       >
         <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
-      <el-upload action="http://localhost:9090/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
-        <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
-      </el-upload>
-      <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>
+      <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
+      <el-button type="primary">导出 <i class="el-icon-top"></i></el-button>
     </div>
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
@@ -112,38 +110,30 @@ export default {
   },
   methods: {
     load() {
-      this.request.get("http://localhost:9090/user/page", {
+      this.request.get("/user/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
           username: this.username,
           email: this.email,
           address: this.address,
-        }
-      }).then(res => {
-        // 注意data
+          }
+        }).then(res => {
         this.tableData = res.data.records
         this.total = res.data.total
-
       })
     },
     save() {
-      this.request.post("http://localhost:9090/user", this.form).then(res => {
-        if (res.data) {
+      this.request.post("/user", this.form).then(res => {
+        if (res.code === '200') {
           this.$message.success("保存成功")
           this.dialogFormVisible = false
-          this.load()
+          this
+              .load()
         } else {
           this.$message.error("保存失败")
         }
       })
-    },
-    handleExcelImportSuccess() {
-      this.$message.success("导入成功")
-      this.load()
-    },
-    exp() {
-      window.open("http://localhost:9090/user/export")
     },
     handleAdd() {
       this.dialogFormVisible = true
@@ -154,7 +144,7 @@ export default {
       this.dialogFormVisible = true
     },
     del(id) {
-      this.request.delete("http://localhost:9090/user/" + id).then(res => {
+      this.request.delete("/user/" + id).then(res => {
         if (res.data) {
           this.$message.success("删除成功")
           this.load()
@@ -169,7 +159,7 @@ export default {
     },
     delBatch() {
       let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-      this.request.post("http://localhost:9090/user/del/batch", ids).then(res => {
+      this.request.post("/user/del/batch", ids).then(res => {
         if (res.data) {
           this.$message.success("批量删除成功")
           this.load()
@@ -185,6 +175,7 @@ export default {
       this.load()
     },
     handleSizeChange(pageSize) {
+      console.log(pageSize)
       this.pageSize = pageSize
       this.load()
     },
@@ -199,7 +190,7 @@ export default {
 
 
 <style>
-.headerBg{
-  background-color: #eee!important;
+.headerBg {
+  background: #eee!important;
 }
 </style>

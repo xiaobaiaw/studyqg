@@ -7,7 +7,7 @@ public class ServiiceException extends RuntimeException {
 
     private String code;
 
-    public ServiiceException(String code,String msg){
+    public ServiiceException(String code, String msg) {
         super(msg);
         this.code = code;
     }

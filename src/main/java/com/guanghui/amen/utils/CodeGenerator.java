@@ -8,6 +8,7 @@ import java.util.Collections;
 /**
  * mp代码生成器
  * by 林同学
+ *
  * @since 2022-6-22
  */
 
@@ -16,7 +17,8 @@ public class CodeGenerator {
     public static void main(String[] args) {
         generate();
     }
-    private static void generate(){
+
+    private static void generate() {
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/yeone?serverTimezone=GMT%2b8", "root", "root")
                 .globalConfig(builder -> {
                     builder.author("林同学") // 设置作者

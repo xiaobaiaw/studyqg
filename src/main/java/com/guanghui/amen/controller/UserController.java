@@ -6,6 +6,7 @@ import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.guanghui.amen.common.Constants;
 import com.guanghui.amen.common.Result;
 import com.guanghui.amen.controller.dto.UserDTO;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.List;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 林同学
@@ -35,80 +38,85 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @RestController
 @RequestMapping("user")
-public class  UserController {
+public class UserController {
 
     @Resource
     private IUserService userService;
+
     @PostMapping
-    public Result save(@RequestBody User user){
+    public Result save(@RequestBody User user) {
+
         return Result.success(userService.saveOrUpdate(user));
-        }
+    }
 
     @PostMapping("login")
-    public Result login(@RequestBody UserDTO userDTO){
+    public Result login(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
-        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)){
-            return Result.error(Constants.CODE_400,"参数错误");
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return Result.error(Constants.CODE_400, "参数错误");
         }
-
-        return Result.success(userService.login(userDTO));
+        UserDTO dto = userService.login(userDTO);
+        return Result.success(dto);
 
     }
 
     @PostMapping("register")
-    public Result register(@RequestBody UserDTO userDTO){
+    public Result Register(@RequestBody UserDTO userDTO) {
         String username = userDTO.getUsername();
         String password = userDTO.getPassword();
-        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)){
-            return Result.error(Constants.CODE_400,"参数错误");
+        if (StrUtil.isBlank(username) || StrUtil.isBlank(password)) {
+            return Result.error(Constants.CODE_400, "参数错误");
         }
-        return Result.success(userService.register(userDTO));
-    }
-
-    @GetMapping("username/{username}")
-    public Result findOne(@PathVariable String username){
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        return Result.success(userService.getOne(queryWrapper));
+        User register = userService.register(userDTO);
+        return Result.success(register);
 
     }
 
     @GetMapping
-    public Result hhd(){
-            return Result.success(userService.list());
-            }
+    public Result hhd() {
+        return Result.success(userService.list());
+    }
 
     @DeleteMapping("{id}")
-    public Result delete(@PathVariable Integer id){
-            return Result.success(userService.removeById(id));
-            }
+    public Result delete(@PathVariable Integer id) {
+        return Result.success(userService.removeById(id));
+    }
 
     @PostMapping("del/batch")
-    public Result deleteBatch(@RequestBody List<Integer> ids){
-            return Result.success(userService.removeByIds(ids));
-            }
+    public Result deleteBatch(@RequestBody List<Integer> ids) {
+        return Result.success(userService.removeByIds(ids));
+    }
 
     @GetMapping("{id}")
-    public Result findOne(@PathVariable Integer id){
-            return Result.success(userService.getById(id));
-            }
+    public Result findOne(@PathVariable Integer id) {
+        return Result.success(userService.getById(id));
+    }
+
+    @GetMapping("username/{username}")
+    public Result findOne(@PathVariable String username) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        return Result.success(userService.getOne(queryWrapper));
+    }
 
 
     @GetMapping("page")//MybatisPlus方式实现分页查询和模糊查询
     public Result findPage(@RequestParam Integer pageNum,
-                                @RequestParam Integer pageSize,
-                                @RequestParam(defaultValue = "") String username,
-                                @RequestParam(defaultValue = "") String email,
-                                @RequestParam(defaultValue = "") String address
-        ) {
-    QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-    queryWrapper.orderByDesc("id");
-    queryWrapper.like(!Strings.isEmpty(username), "username", username);
-    queryWrapper.like(!Strings.isEmpty(email), "email", email);
-    queryWrapper.like(!Strings.isEmpty(address), "address", address);
-    return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
-}
+                               @RequestParam Integer pageSize,
+                               @RequestParam(defaultValue = "") String username,
+                               @RequestParam(defaultValue = "") String email,
+                               @RequestParam(defaultValue = "") String address
+    ) {
+        IPage<User> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        queryWrapper.like(!Strings.isEmpty(username), "username", username);
+        queryWrapper.like(!Strings.isEmpty(email), "email", email);
+        queryWrapper.like(!Strings.isEmpty(address), "address", address);
+        return Result.success(userService.page(page, queryWrapper));
+    }
+
     @GetMapping("/export")
     public void export(HttpServletResponse response) throws Exception {
         // 从数据库查询出所有的数据
@@ -140,6 +148,7 @@ public class  UserController {
         out.close();
         writer.close();
     }
+
     @PostMapping("/import")
     public Result imp(MultipartFile file) throws Exception {
         InputStream inputStream = file.getInputStream();
