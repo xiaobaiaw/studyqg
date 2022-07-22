@@ -48,38 +48,38 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
 @Resource
 private ${table.serviceName} ${table.entityPath}Service;
 @PostMapping
-public boolean save(@RequestBody ${entity} ${table.entityPath}){
-        return ${table.entityPath}Service.saveOrUpdate(${table.entityPath});
+public Result save(@RequestBody ${entity} ${table.entityPath}){
+        return Result.success(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
         }
 
 @GetMapping
-public List<${entity}> hhd(){
+public Result hhd(){
         return ${table.entityPath}Service.list();
         }
 
 @DeleteMapping("{id}")
-public boolean delete(@PathVariable Integer id){
-        return ${table.entityPath}Service.removeById(id);
+public Result delete(@PathVariable Integer id){
+        return Result.success(${table.entityPath}Service.removeById(id));
         }
 
 @DeleteMapping("del/batch")
-public boolean deleteBatch(@PathVariable Integer ids){
-        return ${table.entityPath}Service.removeById(ids);
+public Result deleteBatch(@PathVariable Integer ids){
+        return Result.success(${table.entityPath}Service.removeById(ids));
         }
 
 @GetMapping("{id}")
-public ${entity} findOne(@PathVariable Integer id){
-        return ${table.entityPath}Service.getById(id);
+public Result findOne(@PathVariable Integer id){
+        return Result.success(${table.entityPath}Service.getById(id));
         }
 
 
 @GetMapping("/page")//MybatisPlus方式实现分页查询和模糊查询
-public Page<${entity}> findPage(@RequestParam Integer pageNum,
+public Result findPage(@RequestParam Integer pageNum,
 @RequestParam Integer pageSize
         ){
         QueryWrapper<${entity}> queryWrapper=new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
-        return ${table.entityPath}Service.page(new Page<>(pageNum,pageSize),queryWrapper);
+        return Result.success(${table.entityPath}Service.page(new Page<>(pageNum,pageSize),queryWrapper));
         }
         }
 

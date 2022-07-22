@@ -24,7 +24,7 @@ public class CodeGenerator {
                     builder.author("林同学") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
-                            .outputDir("D:\\springboot后台\\小白毕设\\springboot\\src\\main\\java\\"); // 指定输出目录
+                            .outputDir("D:\\springboot后台\\小白毕设\\springBoots\\src\\main\\java\\"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.guanghui.amen") // 设置父包名
