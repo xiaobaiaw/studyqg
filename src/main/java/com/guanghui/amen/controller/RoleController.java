@@ -57,9 +57,11 @@ public Result findOne(@PathVariable Integer id){
 
 @GetMapping("/page")//MybatisPlus方式实现分页查询和模糊查询
 public Result findPage(@RequestParam Integer pageNum,
-@RequestParam Integer pageSize
+                        @RequestParam Integer pageSize,
+                       @RequestParam String name
         ){
         QueryWrapper<Role> queryWrapper=new QueryWrapper<>();
+        queryWrapper.like("name",name);
         queryWrapper.orderByDesc("id");
         return Result.success(roleService.page(new Page<>(pageNum,pageSize),queryWrapper));
         }
