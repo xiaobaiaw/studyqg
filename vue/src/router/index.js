@@ -1,32 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/store";
+import el from "element-ui/src/locale/lang/el";
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-        path: '/',
-        component: () => import('../views/Manage.vue'),
-        redirect: "/home",
-        children: [
-            {path: '/home', name: '首页', component: () => import('../views/Home.vue')},
-            {path: '/user', name: '用户管理', component: () => import('../views/User.vue')},
-            {path: '/role', name: '角色管理', component: () => import('../views/Role.vue')},
-            {path: '/menu', name: '菜单管理', component: () => import('../views/Menu.vue')},
-            {path: '/person', name: '个人信息', component: () => import('../views/Person.vue')},
-            {path: '/file', name: '文件管理', component: () => import('../views/File.vue')},
-        ]
-    },
-    {
-        path: '/about',
-        name: 'About',
-        component: () => import('../views/About.vue')
-    },
-    {
         path: '/register',
         name: 'Register',
         component: () => import('../views/Register.vue')
+    },
+    {
+        path: '*',
+        name: '404',
+        component: () => import('../views/404.vue')
     },
     {
         path: '/login',
@@ -41,6 +29,36 @@ const router = new VueRouter({
     routes
 })
 
+export const  setRoutes = () => {
+    const storeMenus = localStorage.getItem("menus");
+    if (storeMenus) {
+        // 拼装动态路由
+        const manageRoute = { path: '/', name:'Manage', component: () => import('../views/Manage.vue'), redirect: "/home", children: []}
+        const menus = JSON.parse(storeMenus)
+        menus.forEach(item => {
+            if (item.path) {
+                let itemMenu = {path: item.path.replace("/",""), name: item.name, component: () => import('../views/' + item.pagePath + '.vue')}
+                manageRoute.children.push(itemMenu)
+            } else if(item.children.length) {
+                item.children.forEach(item => {
+                    if (item.path) {
+                        let itemMenu = {path: item.path.replace("/",""), name: item.name, component: () => import('../views/' + item.pagePath + '.vue')}
+                        manageRoute.children.push(itemMenu)
+                    }
+                })
+            }
+        })
+        const currentRouteNames = router.getRoutes()
+        if (!currentRouteNames.includes('Manage')) {
+            //动态添加到现在路由对象中去
+            router.addRoute(manageRoute)
+        }
+
+    }
+}
+
+// 重置我就再set一次路由
+setRoutes()
 // 路由守卫
 router.beforeEach((to, from, next) => {
     localStorage.setItem("currentPathName", to.name)  // 设置当前的路由名称，为了在Header组件中去使用

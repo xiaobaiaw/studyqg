@@ -25,7 +25,7 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="description" label="描述"></el-table-column>
+      <el-table-column prop="flag" label="唯一标识"></el-table-column>
       <el-table-column label="操作"  width="280" align="center">
         <template slot-scope="scope">
           <el-button type="info" @click="selectMenu(scope.row.id)">分配菜单 <i class="el-icon-menu"></i></el-button>
@@ -61,8 +61,8 @@
         <el-form-item label="名称">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="form.description" autocomplete="off"></el-input>
+        <el-form-item label="唯一标识">
+          <el-input v-model="form.flag" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -77,13 +77,16 @@
           :data="menuData"
           show-checkbox
           node-key="id"
-          :default-expanded-keys="[1]"
-          :default-checked-keys="[4]"
-          @check-change="handleCheckChange">
+          ref="tree"
+          :default-expanded-keys="expends"
+          :default-checked-keys="checks">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          <span><i :class="data.icon"></i> {{ data.name}}</span>
+        </span>
       </el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="menuDialogVis = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button type="primary" @click="saveRoleMenu">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -107,7 +110,9 @@ export default {
       multipleSelection: [],
       props: {
         label: 'name',
-      }
+      },
+      expends: [],
+      checks: [],
     }
   },
   created() {
@@ -136,6 +141,16 @@ export default {
               .load()
         } else {
           this.$message.error("保存失败")
+        }
+      })
+    },
+    saveRoleMenu() {
+      this.request.post("/role/roleMenu/" + this.roleId,this.$refs.tree.getCheckedKeys()).then(res => {
+        if (res.code === '200') {
+          this.$message.success("绑定成功")
+          this.menuDialogVis = false
+        } else {
+          this.$message.error(res.msg)
         }
       })
     },
@@ -186,16 +201,19 @@ export default {
       this.pageNum = pageNum
       this.load()
     },
-
     selectMenu(roleId){
       this.menuDialogVis = true
+      this.roleId = roleId
       // 请求菜单数据
       this.request.get("/menu").then(res => {
         this.menuData = res.data
+
+        // 把后台返回的菜单数据处理成 id数据
+        this.expends = this.menuData.map(v => v.id)
       })
-    },
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data, checked, indeterminate);
+      this.request.get("/role/roleMenu/" + this.roleId).then(res => {
+        this.checks = res.data
+      })
     },
 
   }

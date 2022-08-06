@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import {setRoutes} from "@/router"
 export default {
   name: "Login",
   data() {
@@ -39,12 +40,15 @@ export default {
     }
   },
   methods: {
-    login() {
+    login: function () {
       this.$refs['userForm'].validate((valid) => {
         if (valid) {
           this.request.post("/user/login", this.user).then(res => {
             if (res.code === '200') {
               localStorage.setItem("user", JSON.stringify(res.data))//储存用户信息到浏览器
+              localStorage.setItem("menus", JSON.stringify(res.data.menus))//储存用户信息到浏览器
+
+              setRoutes()
               this.$router.push("/")
               this.$message.success("登陆成功")
             } else {

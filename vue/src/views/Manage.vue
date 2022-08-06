@@ -2,7 +2,7 @@
   <el-container style="min-height: 100vh">
 
     <el-aside :width="sideWidth + 'px'" style="box-shadow: 2px 0 6px rgb(0 21 41 / 35%);">
-      <Aside :isCollapse="isCollapse" :logoTextshow="logoTextshow"/>
+      <Aside :isCollapse="isCollapse" :logoTextshow="logoTextshow" :menus="user.menus"/>
     </el-aside>
 
     <el-container>
