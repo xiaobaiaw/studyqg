@@ -2,6 +2,7 @@ package com.guanghui.amen.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.guanghui.amen.common.Constants;
 import com.guanghui.amen.common.Result;
 import com.guanghui.amen.controller.dto.UserDTO;
+import com.guanghui.amen.controller.dto.UserPasswordDTO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +47,6 @@ public class UserController {
 
     @PostMapping
     public Result save(@RequestBody User user) {
-
         return Result.success(userService.saveOrUpdate(user));
     }
 
@@ -58,6 +59,15 @@ public class UserController {
         }
         UserDTO dto = userService.login(userDTO);
         return Result.success(dto);
+
+    }
+
+    @PostMapping("password")
+    public Result password(@RequestBody UserPasswordDTO userPasswordDTO) {
+        userPasswordDTO.getPassword();
+        userPasswordDTO.setNewPassword(SecureUtil.md5(userPasswordDTO.getNewPassword()));
+        userService.updatePassword(userPasswordDTO);
+        return Result.success();
 
     }
 
@@ -76,6 +86,14 @@ public class UserController {
     @GetMapping
     public Result hhd() {
         return Result.success(userService.list());
+    }
+
+    @GetMapping("role/{role}")
+    public Result findUsersByRole(@PathVariable String role) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("role",role);
+//        List<User> list = userService.list(queryWrapper);
+        return Result.success(userService.list(queryWrapper));
     }
 
     @DeleteMapping("{id}")
@@ -108,13 +126,12 @@ public class UserController {
                                @RequestParam(defaultValue = "") String email,
                                @RequestParam(defaultValue = "") String address
     ) {
-        IPage<User> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
-        queryWrapper.like(!Strings.isEmpty(username), "username", username);
-        queryWrapper.like(!Strings.isEmpty(email), "email", email);
-        queryWrapper.like(!Strings.isEmpty(address), "address", address);
-        return Result.success(userService.page(page, queryWrapper));
+//        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.orderByDesc("id");
+//        queryWrapper.like(!Strings.isEmpty(username), "username", username);
+//        queryWrapper.like(!Strings.isEmpty(email), "email", email);
+//        queryWrapper.like(!Strings.isEmpty(address), "address", address);
+        return Result.success(userService.findPage(new Page<>(pageNum, pageSize), username, email, address));
     }
 
     @GetMapping("/export")

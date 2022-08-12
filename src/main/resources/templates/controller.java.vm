@@ -46,42 +46,42 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
     public class ${table.controllerName} {
     #end
 
-        @Resource
-        private ${table.serviceName} ${table.entityPath}Service;
-        @PostMapping
-        public Result save(@RequestBody ${entity} ${table.entityPath}){
-        return Result.success(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
-        }
+    @Resource
+    private ${table.serviceName} ${table.entityPath}Service;
+    @PostMapping
+    public Result save(@RequestBody ${entity} ${table.entityPath}){
+    return Result.success(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
+    }
 
-        @GetMapping
-        public Result hhd(){
-        return Result.success(${table.entityPath}Service.list());
-        }
+    @GetMapping
+    public Result hhd(){
+    return Result.success(${table.entityPath}Service.list());
+    }
 
-        @DeleteMapping("{id}")
-        public Result delete(@PathVariable Integer id){
-        return Result.success(${table.entityPath}Service.removeById(id));
-        }
+    @DeleteMapping("{id}")
+    public Result delete(@PathVariable Integer id){
+    return Result.success(${table.entityPath}Service.removeById(id));
+    }
 
-        @DeleteMapping("del/batch")
-        public Result deleteBatch(@PathVariable Integer ids){
-        return Result.success(${table.entityPath}Service.removeById(ids));
-        }
+    @DeleteMapping("del/batch")
+    public Result deleteBatch(@PathVariable Integer ids){
+    return Result.success(${table.entityPath}Service.removeById(ids));
+    }
 
-        @GetMapping("{id}")
-        public Result findOne(@PathVariable Integer id){
-        return Result.success(${table.entityPath}Service.getById(id));
-        }
+    @GetMapping("{id}")
+    public Result findOne(@PathVariable Integer id){
+    return Result.success(${table.entityPath}Service.getById(id));
+    }
 
 
-        @GetMapping("/page")//MybatisPlus方式实现分页查询和模糊查询
-        public Result findPage(@RequestParam Integer pageNum,
-        @RequestParam Integer pageSize
-        ){
-        QueryWrapper<${entity}> queryWrapper=new QueryWrapper<>();
-        queryWrapper.orderByDesc("id");
-        return Result.success(${table.entityPath}Service.page(new Page<>(pageNum,pageSize),queryWrapper));
-        }
+    @GetMapping("/page")//MybatisPlus方式实现分页查询和模糊查询
+    public Result findPage(@RequestParam Integer pageNum,
+    @RequestParam Integer pageSize
+    ){
+    QueryWrapper<${entity}> queryWrapper=new QueryWrapper<>();
+    queryWrapper.orderByDesc("id");
+    return Result.success(${table.entityPath}Service.page(new Page<>(pageNum,pageSize),queryWrapper));
+    }
 }
 
 #end

@@ -10,9 +10,9 @@ import java.util.List;
  */
 @Data
 public class UserDTO {
+    private Integer id;
     private String username;
     private String password;
-    private String tpassword;
     private String nickname;
     private String avatarUrl;
     private String token;

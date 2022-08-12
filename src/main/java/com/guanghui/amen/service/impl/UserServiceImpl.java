@@ -1,10 +1,14 @@
 package com.guanghui.amen.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.guanghui.amen.common.Constants;
 import com.guanghui.amen.controller.dto.UserDTO;
+import com.guanghui.amen.controller.dto.UserPasswordDTO;
 import com.guanghui.amen.entity.Menu;
 import com.guanghui.amen.entity.User;
 import com.guanghui.amen.exception.ServiiceException;
@@ -40,6 +44,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private RoleMapper roleMapper;
 
     @Resource
+    private UserMapper userMapper;
+
+    @Resource
     private RoleMenuMapper roleMenuMapper;
 
     @Resource
@@ -47,13 +54,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public UserDTO login(UserDTO userDTO) {
+        //用户密码加密 md5加密
+        userDTO.setPassword(SecureUtil.md5(userDTO.getPassword()));
         User one = getUserInfo(userDTO);
         if (one != null) {
             BeanUtil.copyProperties(one, userDTO, true);
             // 设置token
             String token = TokenUtils.genToken(one.getId().toString(), one.getPassword());
             userDTO.setToken(token);
-
             String role = one.getRole();// ROLE_ADMIN
             // 设置用户菜单列表
             List<Menu> roleMenus = getRoleMenu(role);
@@ -75,7 +83,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 throw new ServiiceException(Constants.CODE_600, "用户已存在");
             }
         return one;
+    }
+
+    @Override
+    public void updatePassword(UserPasswordDTO userPasswordDTO) {
+        Boolean updatePassword = userMapper.updatePassword(userPasswordDTO.getUsername(),userPasswordDTO.getNewPassword());
+        if (!updatePassword) {
+            throw new ServiiceException(Constants.CODE_600,"密码错误");
         }
+    }
+
+    @Override
+    public Page<User> findPage(Page<User> page, String username, String email, String address) {
+        return userMapper.findPage(page,username,email,address);
+    }
+
+
     private User getUserInfo(UserDTO userDTO){
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", userDTO.getUsername());

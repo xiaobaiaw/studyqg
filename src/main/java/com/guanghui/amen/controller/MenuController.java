@@ -47,6 +47,11 @@ public class MenuController {
                         return Result.success(menuService.findMenus(name));
                 }
 
+        @GetMapping("ids")
+        public Result findAllIds(@RequestParam(defaultValue = "") String name){
+                return Result.success(menuService.list().stream().map(Menu::getId));
+        }
+
         @DeleteMapping("{id}")
         public Result delete(@PathVariable Integer id){
                 return Result.success(menuService.removeById(id));
