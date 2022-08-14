@@ -148,6 +148,7 @@ export default {
     },
     handleFileUploadSuccess(res) {
       console.log(res)
+      this.$message.success("上传成功")
       this.load()
     },
     download(url) {

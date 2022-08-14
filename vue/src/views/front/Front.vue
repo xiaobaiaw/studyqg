@@ -2,34 +2,68 @@
   <div>
     <!--头部-->
     <div style="display: flex; height: 60px; line-height: 60px;border-bottom: #8c939d">
-      <div style="width: 250px; text-align: center">欢迎来到实力至上主义系统</div>
+      <div style="width: 300px; display: flex; padding-left: 30px;">
+        <div style="width: 60px;">
+          <img src="../../assets/一人之下logo.jpg" alt="" style="width: 50px; position: relative; top: 10px; right: 0;">
+        </div>
+        <div style="flex: 1;">欢迎来到实力至上主义系统</div>
+      </div>
       <div style="flex: 1">
         <!--导航菜单-->
-        <ul style="list-style: none; background-color: #98FB98;">
-          <li class="item"><a href="/">菜单1</a></li>
-          <li class="item"><a href="/">菜单2</a></li>
-          <li class="item"><a href="/">菜单3</a></li>
-          <li class="item"><a href="/">菜单4</a></li>
-        </ul>
+<!--        <ul style="list-style: none; background-color: #98FB98;">-->
+<!--          <li class="item">-->
+<!--            <el-dropdown size="medium">-->
+<!--              <span>更多菜单<i class="el-icon-arrow-down el-icon-right"></i></span>-->
+<!--              <el-dropdown-menu slot="dropdown">-->
+<!--                <el-dropdown-item>炁体源流</el-dropdown-item>-->
+<!--                <el-dropdown-item>通天箓</el-dropdown-item>-->
+<!--                <el-dropdown-item>双全手</el-dropdown-item>-->
+<!--                <el-dropdown-item>神灵明</el-dropdown-item>-->
+<!--              </el-dropdown-menu>-->
+<!--            </el-dropdown>-->
+<!--          </li>-->
+<!--          <li class="item"><a href="/">菜单2</a></li>-->
+<!--          <li class="item"><a href="/">菜单3</a></li>-->
+<!--          <li class="item"><a href="/">菜单4</a></li>-->
+<!--        </ul>-->
+
+        <el-menu :default-active="1" class="el-menu-demo" mode="horizontal">
+          <el-menu-item index="1"><router-link to="/front/home">处理中心</router-link></el-menu-item>
+          <el-submenu index="2">
+            <template slot="title">我的工作台</template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-submenu index="2-4">
+              <template slot="title">选项4</template>
+              <el-menu-item index="2-4-1">选项1</el-menu-item>
+              <el-menu-item index="2-4-2">选项2</el-menu-item>
+              <el-menu-item index="2-4-3">选项3</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="3" disabled>消息中心</el-menu-item>
+          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+        </el-menu>
+
       </div>
       <div style="width: 200px;">
-        <div v-if="!user.username" style="text-align: right;padding-right: 30px">
+        <div v-if="!user.username" style="text-align: right;">
           <el-button @click="$router.push('/login')">登录</el-button>
           <el-button @click="$router.push('/register')">注册</el-button>
         </div>
         <div v-else>
           <el-dropdown style="width: 100px; cursor: pointer">
-            <div style="display: inline-block">
+            <div style="display: inline-block; padding-left: 30px;">
               <img :src="user.avatarUrl" alt=""
                    style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
               <span>{{ user.nickname }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
             </div>
             <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center">
               <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-                <router-link to="/person">个人信息</router-link>
+                <router-link to="/front/person">个人信息</router-link>
               </el-dropdown-item>
               <el-dropdown-item style="font-size: 14px; padding: 5px 0">
-                <router-link to="/password">修改密码</router-link>
+                <router-link to="/front/password">修改密码</router-link>
               </el-dropdown-item>
               <el-dropdown-item style="font-size: 14px; padding: 5px 0">
                 <span style="text-decoration: none" @click="logout">退出</span>
@@ -38,12 +72,10 @@
           </el-dropdown>
         </div>
       </div>
-
-      <div style="width: 150px; text-align: center">
-        昵称
-      </div>
     </div>
-    <router-view/>
+    <div style="width: 1000px;margin: 0 auto;">
+      <router-view/>
+    </div>
   </div>
 </template>
 

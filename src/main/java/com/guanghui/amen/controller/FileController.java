@@ -1,17 +1,24 @@
 package com.guanghui.amen.controller;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
+import com.guanghui.amen.common.Constants;
 import com.guanghui.amen.common.Result;
 import com.guanghui.amen.entity.Files;
 import com.guanghui.amen.mapper.FileMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +42,10 @@ public class FileController {
 
     @Resource
     private FileMapper fileMapper;
+
+    @Autowired                  //操作字符串的,JSON数据
+    private StringRedisTemplate stringRedisTemplate;
+
 
     /**
      * 文件上传接口
@@ -82,6 +93,19 @@ public class FileController {
         saveFile.setMd5(md5);
         fileMapper.insert(saveFile);
 
+//        1.从redis取出数据,操作完再设置
+//        String json = stringRedisTemplate.opsForValue().get(Constants.FILES_KEY);
+//        List<Files> files = JSONUtil.toBean(json, new TypeReference<List<Files>>() {
+//        }, true);
+//        files.add(saveFile);
+//        setCache(Constants.FILES_KEY,JSONUtil.toJsonStr(files));
+//
+//        //2.从数据库查出数据
+//        List<Files> files1 = fileMapper.selectFilesList();
+//        //设置最新的缓存
+//        setCache(Constants.FILES_KEY,JSONUtil.toJsonStr(files1));
+//        3.最简单的方式，直接清空缓存
+        flushRedis(Constants.FILES_KEY);
         return url;
     }
 
@@ -114,35 +138,38 @@ public class FileController {
      */
     private Files getFileByMd5(String md5) {
         // 查询文件的md5是否存在
-        QueryWrapper<Files> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("md5", md5);
-        List<Files> filesList = fileMapper.selectList(queryWrapper);
+        List<Files> filesList = fileMapper.selectMd5List(md5);
         return filesList.size() == 0 ? null : filesList.get(0);
     }
-
+    //更新缓存
+//    @CachePut(value = "files",key = "'frontAll'")
     @PostMapping("/update")
     public Result update(@RequestBody Files files) {
-        return Result.success(fileMapper.updateById(files));
+        fileMapper.updateById(files);
+        flushRedis(Constants.FILES_KEY);
+        return Result.success(fileMapper.selectFilesList());
     }
 
+    //通过id清除一条缓存
+//    @CacheEvict(value = "files",key = "'frontAll'")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id) {
         Files files = fileMapper.selectById(id);
         files.setIsDelete(true);
         fileMapper.updateById(files);
+        flushRedis(Constants.FILES_KEY);
         return Result.success();
     }
 
     @PostMapping("/del/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
         // select * from sys_file where id in (id,id,id...)
-        QueryWrapper<Files> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("id", ids);
-        List<Files> files = fileMapper.selectList(queryWrapper);
+        List<Files> files = fileMapper.selectIdsList(ids);
         for (Files file : files) {
             file.setIsDelete(true);
             fileMapper.updateById(file);
         }
+        flushRedis(Constants.FILES_KEY);
         return Result.success();
     }
 
@@ -167,6 +194,12 @@ public class FileController {
         }
         return Result.success(fileMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper));
     }
-
+//    两种方法
+    private void flushRedis(String key){
+        stringRedisTemplate.delete(key);
+    }
+    private void setCache(String key,String value){
+        stringRedisTemplate.opsForValue().set(key,value);
+    }
 
 }

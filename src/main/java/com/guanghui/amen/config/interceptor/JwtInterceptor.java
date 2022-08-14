@@ -7,6 +7,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.guanghui.amen.common.Constants;
+import com.guanghui.amen.config.AuthAccess;
 import com.guanghui.amen.entity.User;
 import com.guanghui.amen.exception.ServiiceException;
 import com.guanghui.amen.service.IUserService;
@@ -28,6 +29,13 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 如果不是映射到方法直接通过
         if(!(handler instanceof HandlerMethod)){
             return true;
+        } else {
+//          通过自定义注解的方式定义一个类似通过拦截器权限一样的注解类型
+            HandlerMethod h = (HandlerMethod) handler;
+            AuthAccess authAccess = h.getMethodAnnotation(AuthAccess.class);
+            if (authAccess != null) {
+                return true;
+            }
         }
         // 执行认证
         if (StrUtil.isBlank(token)) {

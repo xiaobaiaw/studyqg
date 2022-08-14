@@ -9,5 +9,7 @@ public interface Constants {
     String CODE_600 = "600_其他业务异常";//其他业务异常
 
     String DICT_TYPE_ICON = "icon";
+    String FILES_KEY = "FILES_FRONT_ALL";
+
 
 }
