@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: "Person",
+  name: "FrontPerson",
   data() {
     return {
       form: {},

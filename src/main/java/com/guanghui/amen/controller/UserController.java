@@ -12,6 +12,7 @@ import com.guanghui.amen.common.Constants;
 import com.guanghui.amen.common.Result;
 import com.guanghui.amen.controller.dto.UserDTO;
 import com.guanghui.amen.controller.dto.UserPasswordDTO;
+import com.guanghui.amen.entity.Course;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
@@ -133,6 +134,10 @@ public class UserController {
 //        queryWrapper.like(!Strings.isEmpty(address), "address", address);
         return Result.success(userService.findPage(new Page<>(pageNum, pageSize), username, email, address));
     }
+//    @GetMapping("course")
+//    public Result findCourse(@RequestParam List<Course> courses,@RequestParam List<Course> stuCourses){
+//        return Result.success(userService.findCourse(courses,stuCourses));
+//    }
 
     @GetMapping("/export")
     public void export(HttpServletResponse response) throws Exception {

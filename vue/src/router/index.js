@@ -1,12 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from "@/store";
-import el from "element-ui/src/locale/lang/el";
 
 Vue.use(VueRouter)
 
-
 const routes = [
+    {
+        path: '/login',
+        name: 'Login',
+        component: () => import('../views/Login.vue')
+    },
     {
         path: '/register',
         name: 'Register',
@@ -18,37 +21,38 @@ const routes = [
         component: () => import('../views/404.vue')
     },
     {
-        path: '/login',
-        name: 'Login',
-        component: () => import('../views/Login.vue')
-    },
-    {
         path: '/front',
         name: 'Front',
         component: () => import('../views/front/Front'),
         children: [
             {
                 path: 'home',
-                name: 'Home',
-                component: () => import('../views/front/Home')
+                name: 'FrontHome',
+                component: () => import('../views/front/Home.vue')
             },
             {
                 path: 'item1',
                 name: 'Item1',
-                component: () => import('../views/front/Item1')
+                component: () => import('../views/front/Item1.vue')
             },
             {
                 path: 'person',
-                name: 'Person',
+                name: 'FrontPerson',
                 component: () => import('../views/front/Person')
             },
             {
                 path: 'password',
-                name: 'Password',
+                name: 'FrontPassword',
                 component: () => import('../views/front/Password')
             },
+            {
+                path: 'video',
+                name: 'Video',
+                component: () => import('../views/front/Video')
+            },
+
         ]
-    }
+    },
 ]
 
 const router = new VueRouter({

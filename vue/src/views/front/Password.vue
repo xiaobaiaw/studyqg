@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "Password",
+  name: "FrontPassword",
   data() {
     return {
       form: {},

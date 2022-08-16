@@ -64,4 +64,6 @@ public class User implements Serializable {
 
     @TableField(exist = false)
     private List<Course> stuCourses;
+
+
 }

@@ -198,8 +198,8 @@ public class FileController {
     private void flushRedis(String key){
         stringRedisTemplate.delete(key);
     }
-    private void setCache(String key,String value){
-        stringRedisTemplate.opsForValue().set(key,value);
-    }
+//    private void setCache(String key,String value){
+//        stringRedisTemplate.opsForValue().set(key,value);
+//    }
 
 }

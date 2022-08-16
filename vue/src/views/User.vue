@@ -27,7 +27,7 @@
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="ID" width="80"></el-table-column>
+      <el-table-column :index="indexMethod" sortable prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="username" label="用户名" width="140"></el-table-column>
       <el-table-column align="center" prop="role" label="角色">
         <template slot-scope="scope">
@@ -64,7 +64,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageNum"
-          :page-sizes="[2, 5, 10, 20]"
+          :page-sizes="[5, 10, 20 ,50]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -120,7 +120,7 @@ export default {
       tableData: [],
       total: 0,
       pageNum: 1,
-      pageSize: 2,
+      pageSize: 5,
       username: "",
       email: "",
       address: "",
@@ -155,6 +155,10 @@ export default {
       this.request.get("/role").then(res => {
         this.roles = res.data
       })
+    },
+    //序号
+    indexMethod(index) {
+      return (this.pageIndex - 1) * this.pageSize + index + 1
     },
     save() {
       this.request.post("/user", this.form).then(res => {
@@ -216,12 +220,10 @@ export default {
       this.load()
     },
     handleSizeChange(pageSize) {
-      console.log(pageSize)
       this.pageSize = pageSize
       this.load()
     },
     handleCurrentChange(pageNum) {
-      console.log(pageNum)
       this.pageNum = pageNum
       this.load()
     },

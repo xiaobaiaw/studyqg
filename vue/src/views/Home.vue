@@ -16,11 +16,10 @@
         <div>
           这是一款专门针对设计小白的框架，代码简单，结构清晰
         </div>
-        <div class="m-10"><el-button type="danger"><i class="el-icon-coin"></i> 测试</el-button></div>
-        <div class="m-10"><el-button type="primary"><i class="el-icon-s-custom"></i> 交流</el-button></div>
-        <div class="m-10">
-          <el-button type="primary"><i class="el-icon-link"></i> <a style="color: #fff" href="https://gitee.com/xqnode/pure-design">Gitee源码</a></el-button>
-          <el-button type="primary"><i class="el-icon-link"></i> <a style="color: #fff" href="https://www.bilibili.com/video/BV1U44y1W77D">B站视频讲解</a></el-button>
+        <div class="m-10" style="margin: 10px;"><el-button type="danger"><i class="el-icon-coin"></i> 测试</el-button></div>
+        <div class="m-10" style="margin: 10px;"><el-button type="primary"><i class="el-icon-s-custom"></i> 交流</el-button></div>
+        <div class="m-10" style="margin: 10px;">
+          <el-button type="primary"><i class="el-icon-link"></i> <a style="color: #fff" href="https://github.com/xiaobaiaw/studyqg/tree/master">GitHub源码</a></el-button>
         </div>
       </el-col>
       <el-col :span="12">
