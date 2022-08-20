@@ -40,8 +40,8 @@ import ${superControllerClassPackage};import javax.annotation.Resource;
 class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
 
 #else
-    #if(${superControllerClass})
-    public class ${table.controllerName} extends ${superControllerClass} {
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
     #else
     public class ${table.controllerName} {
     #end
@@ -50,27 +50,28 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
     private ${table.serviceName} ${table.entityPath}Service;
     @PostMapping
     public Result save(@RequestBody ${entity} ${table.entityPath}){
-    return Result.success(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
+        ${table.entityPath}Service.saveOrUpdate(${table.entityPath});
+        return Result.success();
     }
 
     @GetMapping
     public Result hhd(){
-    return Result.success(${table.entityPath}Service.list());
+        return Result.success(${table.entityPath}Service.list());
     }
 
     @DeleteMapping("{id}")
     public Result delete(@PathVariable Integer id){
-    return Result.success(${table.entityPath}Service.removeById(id));
+        return Result.success(${table.entityPath}Service.removeById(id));
     }
 
     @DeleteMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
-    return Result.success(${table.entityPath}Service.removeById(ids));
+        return Result.success(${table.entityPath}Service.removeById(ids));
     }
 
     @GetMapping("{id}")
     public Result findOne(@PathVariable Integer id){
-    return Result.success(${table.entityPath}Service.getById(id));
+        return Result.success(${table.entityPath}Service.getById(id));
     }
 
 
@@ -78,9 +79,9 @@ class ${table.controllerName}#if(${superControllerClass}) : ${superControllerCla
     public Result findPage(@RequestParam Integer pageNum,
     @RequestParam Integer pageSize
     ){
-    QueryWrapper<${entity}> queryWrapper=new QueryWrapper<>();
-    queryWrapper.orderByDesc("id");
-    return Result.success(${table.entityPath}Service.page(new Page<>(pageNum,pageSize),queryWrapper));
+        QueryWrapper<${entity}> queryWrapper=new QueryWrapper<>();
+        queryWrapper.orderByDesc("id");
+        return Result.success(${table.entityPath}Service.page(new Page<>(pageNum,pageSize),queryWrapper));
     }
 }
 

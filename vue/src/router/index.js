@@ -50,7 +50,21 @@ const routes = [
                 name: 'Video',
                 component: () => import('../views/front/Video')
             },
-
+            {
+                path: 'videoDetail',
+                name: 'VideoDetail',
+                component: () => import('../views/front/VideoDetail')
+            },
+            {
+                path: 'article',
+                name: 'FrontArticle',
+                component: () => import('../views/front/Article')
+            },
+            {
+                path: 'articleDetail',
+                name: 'ArticleDetail',
+                component: () => import('../views/front/ArticleDetail')
+            },
         ]
     },
 ]

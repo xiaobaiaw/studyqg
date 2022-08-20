@@ -6,6 +6,13 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/gloable.css'
 import request from "@/utils/request";
 import store from "@/store";
+import "video.js/dist/video-js.css";
+
+// main.js全局注册
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
 
 Vue.config.productionTip = false
 

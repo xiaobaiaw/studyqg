@@ -3,14 +3,6 @@
 
 <mapper namespace="com.guanghui.amen.mapper.CourseMapper">
 
-    <delete id="deleteStudentCourse">
-        delete from student_course where student_id = #{studentId} and course_id = #{courseId}
-
-    </delete>
-
-    <update id="setStudentCourse">
-        insert into student_course(student_id,course_id) values(#{studentId}, #{courseId})
-    </update>
 
     <select id="findPage" resultType="com.guanghui.amen.entity.Course">
         select course.*,sys_user.nickname as teacher from course

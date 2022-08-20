@@ -160,6 +160,10 @@ public class FileController {
         flushRedis(Constants.FILES_KEY);
         return Result.success();
     }
+    @GetMapping("detail/{id}")
+        public Result getById(@PathVariable Integer id) {
+            return Result.success(fileMapper.selectById(id));
+        }
 
     @PostMapping("/del/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
