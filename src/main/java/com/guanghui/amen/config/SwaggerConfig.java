@@ -46,8 +46,8 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title(title)
                 .description("我的第一份礼物")
-                .termsOfServiceUrl("https://blog.csdn.net/xqnode")
-                .contact(new Contact("xqnode", "https://blog.csdn.net/xqnode", "xiaqingweb@163.com"))
+                .termsOfServiceUrl("https://github.com/xiaobaiaw/studyqg.git")
+                .contact(new Contact("linxiaobai", "https://github.com/xiaobaiaw/studyqg.git", "l13579089@163.com"))
                 .version(version)
                 .build();
     }

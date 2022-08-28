@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -15,36 +18,35 @@ import lombok.Setter;
  * </p>
  *
  * @author 林同学
- * @since 2022-08-08
+ * @since 2022-08-21
  */
 @Getter
 @Setter
-  @ApiModel(value = "Course对象", description = "")
-public class Course implements Serializable {
+  @ApiModel(value = "Goods对象", description = "")
+public class Goods implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @ApiModelProperty("id")
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
 
-      @ApiModelProperty("课程名称")
+      @ApiModelProperty("所属人")
+      private String user;
+
+      @ApiModelProperty("物品名称")
       private String name;
 
-      @ApiModelProperty("学分")
-      private Integer score;
+      @ApiModelProperty("报修时间")
+      private String time;
 
-      @ApiModelProperty("上课时间")
-      private String times;
+      @ApiModelProperty("物品图片")
+      private String img;
 
-      @ApiModelProperty("是否开课")
-      private Boolean state;
-
-      @ApiModelProperty("授课老师id")
-      private Integer teacherId;
+      @ApiModelProperty("保修状态")
+      private String state;
 
       @TableField(exist = false)
-      private String teacher;
+      private List<Goods> records;
 
 
 }

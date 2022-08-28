@@ -8,7 +8,7 @@
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
 
-    <div style="margin: 10px 0">
+    <div style="margin: 10px 0" slot-scope="scope">
       <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
@@ -23,6 +23,7 @@
       </el-popconfirm>
       <el-button type="primary" class="ml-5" @click="handleExcelImporttSuccess">导入 <i class="el-icon-bottom"></i></el-button>
       <el-button type="primary" @click="exp">导出 <i class="el-icon-top"></i></el-button>
+      <el-button type="primary" @click="$router.push('/front/home')" v-if="scope.row.role === 'ROLE_ADMIN'">前往前台页面</el-button>
     </div>
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">

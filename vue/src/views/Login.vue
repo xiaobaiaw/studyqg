@@ -1,5 +1,9 @@
 <template>
+
   <div class="wrapper">
+    <div style="width: 100%; height: 50px;background-color: rgba(0,0,0,0.3);">
+      <div style="margin-left: 70px;padding-top: 7px;"><span style="font-weight: bold;font-size: 25px;text-align: center; color: white;font-family:'宋体';letter-spacing:3px;">XX学校</span></div>
+    </div>
     <div
         style="margin: 200px auto; background-color: #fff; width: 350px; height: 300px; padding: 20px; border-radius: 10px">
       <div style="margin: 20px 0; text-align: center; font-size: 24px"><b>登 录</b></div>
@@ -71,7 +75,7 @@ export default {
 <style>
 .wrapper {
   height: 100vh;
-  background-image: linear-gradient(to bottom right, #FC466B, #3F5EFB);
+  background-image: linear-gradient(to bottom right, #3F5EFB ,#1E90FF);
   overflow: hidden;
 }
 </style>
