@@ -4,14 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.web.bind.annotation.*;
 import com.guanghui.amen.common.Result;
 
-import java.util.List;
-
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import javax.annotation.Resource;
 
-import com.guanghui.amen.service.ICommoditiesService;
-import com.guanghui.amen.entity.Commodities;
+import com.guanghui.amen.service.IOrdersWaresService;
+import com.guanghui.amen.entity.OrdersWares;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,38 +19,38 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author 林同学
- * @since 2022-08-25
+ * @since 2022-09-01
  */
 @RestController
-@RequestMapping("/commodities")
-    public class CommoditiesController {
+@RequestMapping("/orders-wares")
+    public class OrdersWaresController {
     
     @Resource
-    private ICommoditiesService commoditiesService;
+    private IOrdersWaresService ordersWaresService;
     @PostMapping
-    public Result save(@RequestBody Commodities commodities){
-        commoditiesService.saveOrUpdate(commodities);
+    public Result save(@RequestBody OrdersWares ordersWares){
+        ordersWaresService.saveOrUpdate(ordersWares);
         return Result.success();
     }
 
     @GetMapping
     public Result hhd(){
-        return Result.success(commoditiesService.list());
+        return Result.success(ordersWaresService.list());
     }
 
     @DeleteMapping("{id}")
     public Result delete(@PathVariable Integer id){
-        return Result.success(commoditiesService.removeById(id));
+        return Result.success(ordersWaresService.removeById(id));
     }
 
-    @DeleteMapping("del/batch")
+    @PostMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
-        return Result.success(commoditiesService.removeById(ids));
+        return Result.success(ordersWaresService.removeById(ids));
     }
 
     @GetMapping("{id}")
     public Result findOne(@PathVariable Integer id){
-        return Result.success(commoditiesService.getById(id));
+        return Result.success(ordersWaresService.getById(id));
     }
 
 
@@ -60,9 +58,9 @@ import org.springframework.web.bind.annotation.RestController;
     public Result findPage(@RequestParam Integer pageNum,
     @RequestParam Integer pageSize
     ){
-        QueryWrapper<Commodities> queryWrapper=new QueryWrapper<>();
+        QueryWrapper<OrdersWares> queryWrapper=new QueryWrapper<>();
         queryWrapper.orderByDesc("id");
-        return Result.success(commoditiesService.page(new Page<>(pageNum,pageSize),queryWrapper));
+        return Result.success(ordersWaresService.page(new Page<>(pageNum,pageSize),queryWrapper));
     }
 }
 

@@ -16,8 +16,8 @@ import java.util.List;
  */
 public interface IGoodsService extends IService<Goods> {
 
-    List<Goods> findPage(Page<Goods> page, String name, String user);
+    Page<Goods> findPage(Page<Goods> page, String name, String user);
 
-    List <Goods> selectAllPage(Page<Goods> page);
+    Page<Goods> selectAllPage(Page<Goods> page);
 
 }

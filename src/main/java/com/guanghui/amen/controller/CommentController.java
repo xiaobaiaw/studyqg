@@ -89,7 +89,7 @@ import org.springframework.web.bind.annotation.RestController;
         return Result.success(commentService.removeById(id));
     }
 
-    @DeleteMapping("del/batch")
+    @PostMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
         return Result.success(commentService.removeById(ids));
     }

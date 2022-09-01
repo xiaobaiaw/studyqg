@@ -1,6 +1,6 @@
 package com.guanghui.amen.service;
 
-import com.guanghui.amen.entity.Commodities;
+import com.guanghui.amen.entity.OrdersWares;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author 林同学
- * @since 2022-08-25
+ * @since 2022-09-01
  */
-public interface ICommoditiesService extends IService<Commodities> {
+public interface IOrdersWaresService extends IService<OrdersWares> {
 
 }

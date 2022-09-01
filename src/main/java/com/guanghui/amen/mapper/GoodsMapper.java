@@ -19,8 +19,8 @@ import java.util.List;
 public interface GoodsMapper extends BaseMapper<Goods> {
 
     @Select("select * from goods where name like concat('%',#{name},'%' ) and user = #{user} order by id DESC")
-    List<Goods> findPage(Page<Goods> page, @Param("name") String name,@Param("user") String user);
+    Page<Goods> findPage(Page<Goods> page, @Param("name") String name,@Param("user") String user);
 
     @Select("select * from goods ORDER BY id DESC")
-    List<Goods> selectAllPage(Page<Goods> page);
+    Page<Goods> selectAllPage(Page<Goods> page);
 }

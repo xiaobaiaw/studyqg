@@ -1,15 +1,11 @@
 <template>
   <div>
     <div style="margin: 10px 0">
-      <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-message" class="ml-5" v-model="email"></el-input>-->
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-position" class="ml-5" v-model="address"></el-input>-->
+      <el-input style="width: 400px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
       <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
-
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='确定'
@@ -27,25 +23,22 @@
       <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button> -->
     </div>
 
-    <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
+    <el-table :data="tableData" border stripe  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="no" label="编号"></el-table-column>
+      <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column prop="totalPrice" label="总金额"></el-table-column>
       <el-table-column prop="state" label="状态"></el-table-column>
       <el-table-column prop="time" label="下单时间"></el-table-column>
       <el-table-column prop="payTime" label="付款时间"></el-table-column>
-      <el-table-column prop="username" label="用户账号"></el-table-column>
-      <el-table-column prop="nickname" label="用户昵称"></el-table-column>
-      <el-table-column label="查看商品"  width="180" align="center">
+      <el-table-column label="查看商品"  width="120" align="center">
         <template v-slot="scope">
           <el-button type="primary" @click="viemWares(scope.row.id)">查看商品 <i class="el-icon-edit"></i></el-button>
         </template>
       </el-table-column>
       <el-table-column label="操作"  width="180" align="center">
         <template slot-scope="scope">
-          <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
+          <el-button type="success" @click="pay(scope.row)">付 款 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
               confirm-button-text='确定'
@@ -55,7 +48,7 @@
               title="您确定删除吗？"
               @confirm="del(scope.row.id)"
           >
-            <el-button type="danger" slot="reference">删除 <i class="el-icon-remove-outline"></i></el-button>
+            <el-button type="danger" slot="reference" @click="del">取消订单</el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -136,6 +129,9 @@ export default {
     this.load()
   },
   methods: {
+    pay() {
+
+    },
     viemWares(orderId) {
         this.request.get("/orders/getWaresById/" + orderId).then(res => {
         this.waresList = res.data

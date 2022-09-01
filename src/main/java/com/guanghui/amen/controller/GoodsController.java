@@ -57,7 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
         return Result.success(goodsService.removeById(id));
     }
 
-    @DeleteMapping("del/batch")
+    @PostMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
         return Result.success(goodsService.removeById(ids));
     }
@@ -77,14 +77,12 @@ import org.springframework.web.bind.annotation.RestController;
         User currentUser = TokenUtils.getCurrentUser();
         String user = currentUser.getUsername();
         
-        if (!"".equals(name) || RoleEnum.ROLE_TEACHER.toString().equals(currentUser.getRole()) || RoleEnum.ROLE_STUDENT.toString().equals(currentUser.getRole())) {
-            List<Goods> goodsPage = goodsService.findPage(new Page<>(pageNum, pageSize), name, user);
-            goods.setRecords(goodsPage);
-            return Result.success(goods);
+        if (!"".equals(name) || RoleEnum.ROLE_TEACHER.toString().equals(currentUser.getRole()) || RoleEnum.ROLE_STUDENT.toString().equals(currentUser.getRole()) || RoleEnum.ROLE_USER.toString().equals(currentUser.getRole())) {
+            Page<Goods> goodsPage = goodsService.findPage(new Page<>(pageNum, pageSize), name, user);
+            return Result.success(goodsPage);
         }else{
-            List<Goods> goodsList = goodsService.selectAllPage(new Page<>(pageNum, pageSize));
-            goods.setRecords(goodsList);
-            return Result.success(goods);
+            Page<Goods> goodsList = goodsService.selectAllPage(new Page<>(pageNum, pageSize));
+            return Result.success(goodsList);
         }
 //        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
 //        queryWrapper.orderByDesc("id");

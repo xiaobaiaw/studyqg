@@ -53,7 +53,7 @@ public class ArticleController {
     return Result.success(articleService.removeById(id));
     }
 
-    @DeleteMapping("del/batch")
+    @PostMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
     return Result.success(articleService.removeById(ids));
     }

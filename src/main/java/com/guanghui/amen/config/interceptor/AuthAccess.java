@@ -1,4 +1,4 @@
-package com.guanghui.amen.config;
+package com.guanghui.amen.config.interceptor;
 
 import java.lang.annotation.*;
 

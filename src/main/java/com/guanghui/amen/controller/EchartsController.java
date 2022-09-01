@@ -8,7 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.guanghui.amen.common.Constants;
 import com.guanghui.amen.common.Result;
-import com.guanghui.amen.config.AuthAccess;
+import com.guanghui.amen.config.interceptor.AuthAccess;
 import com.guanghui.amen.entity.Files;
 import com.guanghui.amen.entity.User;
 import com.guanghui.amen.mapper.FileMapper;

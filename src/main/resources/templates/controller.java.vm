@@ -64,7 +64,7 @@ public class ${table.controllerName} extends ${superControllerClass} {
         return Result.success(${table.entityPath}Service.removeById(id));
     }
 
-    @DeleteMapping("del/batch")
+    @PostMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
         return Result.success(${table.entityPath}Service.removeById(ids));
     }

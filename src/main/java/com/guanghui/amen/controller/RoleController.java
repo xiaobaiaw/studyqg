@@ -44,7 +44,7 @@ public class RoleController {
                 return Result.success(roleService.removeById(id));
                 }
 
-        @DeleteMapping("del/batch")
+        @PostMapping("del/batch")
         public Result deleteBatch(@PathVariable Integer ids){
                 return Result.success(roleService.removeById(ids));
                 }

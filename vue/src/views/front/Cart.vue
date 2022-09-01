@@ -1,15 +1,12 @@
 <template>
   <div>
     <div style="margin: 10px 0">
-      <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-message" class="ml-5" v-model="email"></el-input>-->
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-position" class="ml-5" v-model="address"></el-input>-->
-      <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
+      <el-input style="width: 400px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
+        <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
 
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='确定'
@@ -21,28 +18,29 @@
       >
         <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
-      <!-- <el-upload action="http://localhost:9090/commodities/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
-        <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
-      </el-upload>
-      <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button> -->
     </div>
 
-    <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
+    <el-table :data="tableData" border stripe size="mediun" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="price" label="单价"></el-table-column>
-      <el-table-column prop="store" label="库存"></el-table-column>
-      <el-table-column prop="unit" label="单位"></el-table-column>
-      <el-table-column label="图片"><template slot-scope="scope"><el-image style="width: 100px; height: 100px" :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image></template></el-table-column>
-      <el-table-column label="购买"  width="180" align="center">
+      <el-table-column prop="waresImg" label="商品图片">
         <template v-slot="scope">
-          <el-button type="primary" @click="buy(scope.row.id)">购 买</el-button>
+          <el-image style="width: 100px; height: 100px" :src="scope.row.waresImg" :preview-src-list="[scope.row.waresImg]"></el-image>
         </template>
       </el-table-column>
+      <el-table-column prop="waresName" label="商品"></el-table-column>
+      <el-table-column prop="num" label="商品价格" width="100px">
+        <template v-slot="scope">
+          <span style="color: orangered">￥ {{ scope.row.price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="num" label="商品数量">
+        <template v-slot="scope">
+          <el-input-number v-model="scope.row.num" :min="1" :max="100" label="数量" @change="changeNum(scope.row)"></el-input-number>
+        </template>
+      </el-table-column>
+      <el-table-column prop="time" label="添加时间"></el-table-column>
       <el-table-column label="操作"  width="180" align="center">
         <template slot-scope="scope">
-          <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
               confirm-button-text='确定'
@@ -64,43 +62,22 @@
           :current-page="pageNum"
           :page-sizes="[2, 5, 10, 20]"
           :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="total, prev, pager, next"
           :total="total">
       </el-pagination>
     </div>
-
-    <el-dialog title="信息" :visible.sync="dialogFormVisible" width="30%" :close-on-click-modal="false">
-      <el-form label-width="100px" size="small" style="width: 90%">
-        <el-form-item label="名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="单价">
-          <el-input v-model="form.price" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="库存">
-          <el-input v-model="form.store" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="单位">
-          <el-input v-model="form.unit" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="封面">
-          <el-upload action="http://localhost:9090/file/upload" ref="img" :on-success="handleImgUploadSuccess">
-            <el-button size="small" type="primary">点击上传</el-button>
-          </el-upload>
-        </el-form-item>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
-      </div>
-    </el-dialog>
+    <div style="margin: 10px 0;text-align: right">
+      <div>当前已选商品总价: <span style="color:orangered;">￥ {{ totalPrice }}</span></div>
+      <el-button style="color:white; background-color: orangered;" size="medium" @click="settleAccount"><i class="el-icon-coin"></i> 结 算</el-button>
+    </div>
   </div>
 </template>
 
 <script>
+import E from "wangeditor";
+
 export default {
-  name: "Commodities",
+  name: "Cart",
   data() {
     return {
       tableData: [],
@@ -109,6 +86,7 @@ export default {
       pageSize: 10,
       name: "",
       form: {},
+      totalPrice: 0.00,
       dialogFormVisible: false,
       multipleSelection: [],
       user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
@@ -118,17 +96,23 @@ export default {
     this.load()
   },
   methods: {
-    buy(commoditiesId) {
-      this.request.post("/orders/" +  commoditiesId + "/" + 1).then(res => {
+    settleAccount() {
+      if (!this.multipleSelection || !this.multipleSelection.length) {
+        this.$message.error("请选择需要删除的数据")
+        return
+      }
+      let data = {name: this.multipleSelection[0].waresName, totalPrice: this.totalPrice, carts: this.multipleSelection}
+      this.request.post("/orders", data).then(res => {
         if (res.code === '200') {
-          this.$message.success("购买成功，请前往订单页面支付")
+          this.$message.success("结算成功")
+           this.load()
         } else {
           this.$message.error(res.msg)
         }
       })
     },
     load() {
-      this.request.get("/commodities/page", {
+      this.request.get("/cart/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -139,8 +123,20 @@ export default {
         this.total = res.data.total
       })
     },
+    changeNum(row) {
+      this.request.post("/cart/num/" + row.id + "/" + row.num).then(res => {
+        // this.load()
+        this.totalPrice = 0.00
+        //计算总价格
+        this.multipleSelection.forEach(item => {
+          item.num = row.num  // 更新选中的数组数量
+          this.totalPrice += item.price * row.num //有坑 数字发生变化需要获取最新的值，进行计算
+        })
+        this.totalPrice = this.totalPrice.toFixed(2)
+      })
+    },
     save() {
-      this.request.post("/commodities", this.form).then(res => {
+      this.request.post("/cart", this.form).then(res => {
         if (res.code === '200') {
           this.$message.success("保存成功")
           this.dialogFormVisible = false
@@ -175,7 +171,7 @@ export default {
       })
     },
     del(id) {
-      this.request.delete("/commodities/" + id).then(res => {
+      this.request.delete("/cart/" + id).then(res => {
         if (res.code === '200') {
           this.$message.success("删除成功")
           this.load()
@@ -185,8 +181,15 @@ export default {
       })
     },
     handleSelectionChange(val) {
-      console.log(val)
+      this.totalPrice = 0.00
       this.multipleSelection = val
+      //进行计算操作
+      if (val && val.length) {
+        val.forEach(item => {
+          this.totalPrice += item.num * item.price
+        })
+        this.totalPrice = this.totalPrice.toFixed(2)
+      }
     },
     delBatch() {
       if (!this.multipleSelection.length) {
@@ -194,7 +197,7 @@ export default {
         return
       }
       let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-      this.request.post("/commodities/del/batch", ids).then(res => {
+      this.request.post("/cart/del/batch", ids).then(res => {
         if (res.code === '200') {
           this.$message.success("批量删除成功")
           this.load()
@@ -227,7 +230,7 @@ export default {
       window.open(url)
     },
     exp() {
-      window.open("http://localhost:9090/commodities/export")
+      window.open("http://localhost:9090/cart/export")
     },
     handleExcelImportSuccess() {
       this.$message.success("导入成功")
@@ -243,6 +246,3 @@ export default {
   background: #eee!important;
 }
 </style>
-————————————————
-版权声明：本文为CSDN博主「程序员青戈」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/xqnode/article/details/124481489

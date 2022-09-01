@@ -57,7 +57,7 @@ public class MenuController {
                 return Result.success(menuService.removeById(id));
                 }
 
-        @DeleteMapping("del/batch")
+        @PostMapping("del/batch")
         public Result deleteBatch(@PathVariable Integer ids){
                 return Result.success(menuService.removeById(ids));
                 }

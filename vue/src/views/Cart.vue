@@ -2,14 +2,11 @@
   <div>
     <div style="margin: 10px 0">
       <el-input style="width: 200px" placeholder="请输入名称" suffix-icon="el-icon-search" v-model="name"></el-input>
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-message" class="ml-5" v-model="email"></el-input>-->
-      <!--      <el-input style="width: 200px" placeholder="请输入" suffix-icon="el-icon-position" class="ml-5" v-model="address"></el-input>-->
-      <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
+        <el-button class="ml-5" type="primary" @click="load">搜索</el-button>
       <el-button type="warning" @click="reset">重置</el-button>
     </div>
 
     <div style="margin: 10px 0">
-      <el-button type="primary" @click="handleAdd">新增 <i class="el-icon-circle-plus-outline"></i></el-button>
       <el-popconfirm
           class="ml-5"
           confirm-button-text='确定'
@@ -21,28 +18,15 @@
       >
         <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
-      <!-- <el-upload action="http://localhost:9090/orders/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
-        <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
-      </el-upload>
-      <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button> -->
     </div>
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="no" label="编号"></el-table-column>
-      <el-table-column prop="totalPrice" label="总金额"></el-table-column>
-      <el-table-column prop="state" label="状态"></el-table-column>
-      <el-table-column prop="time" label="下单时间"></el-table-column>
-      <el-table-column prop="payTime" label="付款时间"></el-table-column>
-      <el-table-column prop="username" label="用户账号"></el-table-column>
-      <el-table-column prop="nickname" label="用户昵称"></el-table-column>
-      <el-table-column label="查看商品"  width="180" align="center">
-        <template v-slot="scope">
-          <el-button type="primary" @click="viemWares(scope.row.id)">查看商品 <i class="el-icon-edit"></i></el-button>
-        </template>
-      </el-table-column>
+      <el-table-column prop="waresId" label="商品id"></el-table-column>
+      <el-table-column prop="userId" label="用户id"></el-table-column>
+      <el-table-column prop="num" label="商品数量"></el-table-column>
+      <el-table-column prop="store" label="添加时间"></el-table-column>
       <el-table-column label="操作"  width="180" align="center">
         <template slot-scope="scope">
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
@@ -74,23 +58,17 @@
 
     <el-dialog title="信息" :visible.sync="dialogFormVisible" width="30%" :close-on-click-modal="false">
       <el-form label-width="100px" size="small" style="width: 90%">
-        <el-form-item label="名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item label="商品id">
+          <el-input v-model="form.waresId" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="订单编号">
-          <el-input v-model="form.no" autocomplete="off"></el-input>
+        <el-form-item label="用户id">
+          <el-input v-model="form.userId" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="总金额">
-          <el-input v-model="form.total" autocomplete="off"></el-input>
+        <el-form-item label="商品数量">
+          <el-input v-model="form.num" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="支付状态">
-          <el-input v-model="form.state" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="下单时间">
-          <el-date-picker v-model="form.time" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"></el-date-picker>
-        </el-form-item>
-        <el-form-item label="付款时间">
-          <el-date-picker v-model="form.payTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"></el-date-picker>
+        <el-form-item label="添加时间">
+          <el-input v-model="form.time" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -98,36 +76,23 @@
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="商品信息" :visible.sync="dialogFormVisible1" width="50%" :close-on-click-modal="false">
-    <el-table :data="waresList" border stripe>
-      <el-table-column prop="id" label="ID" width="80" sortable></el-table-column>
-      <el-table-column prop="name" label="商品名称"></el-table-column>
-      <el-table-column prop="price" label="价格"></el-table-column>
-      <el-table-column prop="description" label="商品描述"></el-table-column>
-      <el-table-column prop="store" label="库存"></el-table-column>
-      <el-table-column prop="unit" label="单位"></el-table-column>
-      <el-table-column label="图片"><template slot-scope="scope"><el-image style="width: 100px; height: 100px" :src="scope.row.img" :preview-src-list="[scope.row.img]"></el-image></template></el-table-column>
-      <el-table-column prop="time" label="上架时间"></el-table-column>
-      <el-table-column prop="num" label="购买数量"></el-table-column>
-    </el-table>
-    </el-dialog>
   </div>
 </template>
 
 <script>
+import E from "wangeditor";
+
 export default {
-  name: "Orders",
+  name: "Cart",
   data() {
     return {
       tableData: [],
-      waresList: [],
       total: 0,
       pageNum: 1,
       pageSize: 10,
       name: "",
       form: {},
       dialogFormVisible: false,
-      dialogFormVisible1: false,
       multipleSelection: [],
       user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
     }
@@ -136,17 +101,8 @@ export default {
     this.load()
   },
   methods: {
-    viemWares(orderId) {
-        this.request.get("/orders/getWaresById/" + orderId).then(res => {
-        this.waresList = res.data
-        this.dialogFormVisible1 = true
-          // setTimeout(() => {
-          //   this.dialogFormVisible1 = false
-          // }, 3000)
-      })
-    },
     load() {
-      this.request.get("/orders/page", {
+      this.request.get("/cart/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -158,7 +114,7 @@ export default {
       })
     },
     save() {
-      this.request.post("/orders", this.form).then(res => {
+      this.request.post("/cart", this.form).then(res => {
         if (res.code === '200') {
           this.$message.success("保存成功")
           this.dialogFormVisible = false
@@ -193,7 +149,7 @@ export default {
       })
     },
     del(id) {
-      this.request.delete("/orders/" + id).then(res => {
+      this.request.delete("/cart/" + id).then(res => {
         if (res.code === '200') {
           this.$message.success("删除成功")
           this.load()
@@ -212,7 +168,7 @@ export default {
         return
       }
       let ids = this.multipleSelection.map(v => v.id)  // [{}, {}, {}] => [1,2,3]
-      this.request.post("/orders/del/batch", ids).then(res => {
+      this.request.post("/cart/del/batch", ids).then(res => {
         if (res.code === '200') {
           this.$message.success("批量删除成功")
           this.load()
@@ -245,7 +201,7 @@ export default {
       window.open(url)
     },
     exp() {
-      window.open("http://localhost:9090/orders/export")
+      window.open("http://localhost:9090/cart/export")
     },
     handleExcelImportSuccess() {
       this.$message.success("导入成功")

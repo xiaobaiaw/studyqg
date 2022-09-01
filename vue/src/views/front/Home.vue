@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-bottom: 100px">
     <div style="margin: 10px 0">
       <el-carousel height="590px" :interval="10000">
         <el-carousel-item v-for="item in imgs" :key="item">
@@ -10,10 +10,12 @@
 
     <div style="margin: 10px 0">
       <el-row :gutter="10">
-        <el-col :span="6" v-for="item in files" :key="item.id" style="margin-bottom: 10px">
+        <el-col :span="6" v-for="item in tableData" :key="item.id" style="margin-bottom: 10px">
           <div style="border: 1px solid #ccc">
-            <img :src="item.url" alt="" style="width: 100%">
-              <div style="color: #666; padding: 10px">{{ item.name }}</div>
+            <img :src="item.img" alt="" style="width: 100%; cursor: pointer;" @click="$router.push('/front/detail?id=' + item.id)">
+            <div style="color: #666; padding: 5px; font-size: 18px; cursor: pointer;"><b @click="$router.push('/front/detail?id=' + item.id)">{{ item.name }}</b></div>
+              <div style="color: #666; padding: 5px; font-size: 14px">{{ item.description }}</div>
+              <div style="color: orangered; padding: 5px; font-size: 14px">￥ {{ item.price }}</div>
               <div style="padding: 10px"><el-button type="primary">购买</el-button></div>
           </div>
         </el-col>
@@ -32,17 +34,57 @@ export default {
           'https://img10.360buyimg.com/babel/s1580x830_jfs/t1/43768/17/17556/83867/62d92ed9E57d9c346/f7bfb8c56bb4f096.jpg!cc_1580x830.webp',
           'https://img10.360buyimg.com/babel/s1580x830_jfs/t1/190638/24/26436/78432/62ec856fE5c5b896a/689a012d04e1cb3e.jpg!cc_1580x830.webp',
       ],
-      files: []
+      tableData: [],
+      total: 0,
+      pageNum: 1,
+      pageSize: 10,
+      name: "",
     }
   },
   created() {
-    this.request.get("/echarts/file/front/all").then(res => {
-      console.log(res.data)
-      this.files = res.data.filter(v => v.type === 'png' || v.type === 'jpg' || v.type === 'webp' || v.type === 'jpeg')
-    })
+    this.load()   //获取后台的商品返回数据
   },
   methods: {
-
+    load() {
+      this.request.get("/wares/page", {
+        params: {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          name: this.name
+        }
+      }).then(res => {
+        this.tableData = res.data.records
+      })
+    },reset() {
+      this.name = ""
+      this.load()
+    },
+    handleSizeChange(pageSize) {
+      console.log(pageSize)
+      this.pageSize = pageSize
+      this.load()
+    },
+    handleCurrentChange(pageNum) {
+      console.log(pageNum)
+      this.pageNum = pageNum
+      this.load()
+    },
+    handleFileUploadSuccess(res) {
+      this.form.file = res
+    },
+    handleImgUploadSuccess(res) {
+      this.form.img = res
+    },
+    download(url) {
+      window.open(url)
+    },
+    exp() {
+      window.open("http://localhost:9090/notice/export")
+    },
+    handleExcelImportSuccess() {
+      this.$message.success("导入成功")
+      this.load()
+    }
   }
 }
 </script>

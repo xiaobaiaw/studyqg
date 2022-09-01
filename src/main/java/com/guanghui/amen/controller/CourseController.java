@@ -60,7 +60,7 @@ public class CourseController {
     return Result.success(courseService.removeById(id));
     }
 
-    @DeleteMapping("del/batch")
+    @PostMapping("del/batch")
     public Result deleteBatch(@PathVariable Integer ids){
     return Result.success(courseService.removeById(ids));
     }

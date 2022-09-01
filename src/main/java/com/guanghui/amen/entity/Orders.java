@@ -2,6 +2,7 @@ package com.guanghui.amen.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -17,7 +18,7 @@ import lombok.Setter;
  * </p>
  *
  * @author 林同学
- * @since 2022-08-25
+ * @since 2022-09-01
  */
 @Getter
 @Setter
@@ -26,32 +27,36 @@ public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-      @ApiModelProperty("id")
       @TableId(value = "id", type = IdType.AUTO)
       private Integer id;
-
-      @ApiModelProperty("订单编号")
-      private String no;
 
       @ApiModelProperty("名称")
       private String name;
 
-      @ApiModelProperty("订单时间")
-      private String time;
+      @ApiModelProperty("编号")
+      private String no;
 
-      @ApiModelProperty("支付状态")
+      @ApiModelProperty("总金额")
+      private BigDecimal totalPrice;
+
+      @ApiModelProperty("状态")
       private String state;
 
-      @TableField(exist = false)
+      @ApiModelProperty("下单时间")
+      private String time;
+
+      @ApiModelProperty("付款时间")
+      private String payTime;
+
+      @ApiModelProperty("用户id")
       private Integer userId;
 
-      @ApiModelProperty("订单总价")
-      private BigDecimal total;
-      //支付宝订单流水号
-      @ApiModelProperty("支付宝交易号")
-      private String alipayNo;
+      @TableField(exist = false)
+      private String username;
 
-      @ApiModelProperty("支付时间")
-      private String paymentTime;
+      @TableField(exist = false)
+      private String nickname;
 
+      @TableField(exist = false)
+      private List<Cart> carts;
 }

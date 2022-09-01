@@ -26,12 +26,12 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     private GoodsMapper goodsMapper;
 
     @Override
-    public List<Goods> findPage(Page<Goods> page, String name, String user) {
+    public Page<Goods> findPage(Page<Goods> page, String name, String user) {
         return goodsMapper.findPage(page,name,user);
     }
 
     @Override
-    public List<Goods> selectAllPage(Page<Goods> page) {
+    public Page<Goods> selectAllPage(Page<Goods> page) {
         return goodsMapper.selectAllPage(page);
     }
 }
