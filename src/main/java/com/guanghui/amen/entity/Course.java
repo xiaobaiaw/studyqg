@@ -43,6 +43,9 @@ public class Course implements Serializable {
       @ApiModelProperty("授课老师id")
       private Integer teacherId;
 
+      @ApiModelProperty("备注")
+      private Integer remark;
+
       @TableField(exist = false)
       private String teacher;
 

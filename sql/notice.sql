@@ -1,0 +1,1 @@
+INSERT INTO `notice` (`id`, `name`, `content`, `time`, `user`, `img`, `type`) VALUES (12, 'uuiy', '<p>gjgjhgjj</p>', '2022-08-30 21:08:21', 'admin', 'http://localhost:9090/file/1d576cc6cff84ece932d59e768be6906.jpg', 2);

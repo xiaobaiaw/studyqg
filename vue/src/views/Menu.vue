@@ -71,11 +71,13 @@
         <el-form-item label="页面路径">
           <el-input v-model="form.pagePath" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="顺序">
+          <el-input v-model="form.sortNum" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="图标">
           <el-select clearable v-model="form.icon" placeholder="请选择" style="width: 100%">
             <el-option v-for="item in options" :key="item.name" :label="item.name" :value="item.value"></el-option>
           </el-select>
-
         </el-form-item>
         <el-form-item label="描述">
           <el-input v-model="form.description" autocomplete="off"></el-input>

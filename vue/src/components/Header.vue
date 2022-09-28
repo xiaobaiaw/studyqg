@@ -21,6 +21,9 @@
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
           <router-link to="/password">修改密码</router-link>
         </el-dropdown-item>
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0" v-if="user.role === 'ROLE_ADMIN' || user.role === 'ROLE_TEACHER'">
+          <router-link to="/front/home">跳转前台</router-link>
+        </el-dropdown-item>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
           <span style="text-decoration: none" @click="logout">退出</span>
         </el-dropdown-item>

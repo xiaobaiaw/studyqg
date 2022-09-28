@@ -8,8 +8,8 @@
            router
   >
     <div style="height: 60px; line-height: 60px; text-align: center">
-      <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px; right: 5px">
-      <b style="color: white" v-show="logoTextshow">后台管理系统</b>
+      <img src="../assets/logo.png" alt="" style="width: 20px; position: relative; top: 5px;">
+      <b style="color: white; margin-left: 5px" v-show="logoTextShow">后台管理系统</b>
     </div>
     <div v-for="item in menus" :key="item.id">
       <div v-if="item.path">
@@ -41,17 +41,36 @@ export default {
   name: "Aside",
   props: {
     isCollapse: Boolean,
-    logoTextshow: Boolean,
+    logoTextShow: Boolean
   },
-  data(){
-    return{
+  data() {
+    return {
       menus: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")) : [],
       opens: localStorage.getItem("menus") ? JSON.parse(localStorage.getItem("menus")).map(v => v.id + '') : []
     }
+  },
+  methods: {
+    //序号
+    indexMethod(index) {
+      return (this.pageIndex - 1) * this.pageSize + index + 1
+    },
   }
 }
 </script>
 
-<style scoped>
+<style>
+.el-menu-item.is-active {
+  background-color: rgb(38, 52, 69) !important;
+}
+.el-menu-item:hover {
+  background-color: rgb(38, 52, 69) !important;
+}
 
+.el-submenu__title:hover {
+  background-color: rgb(38, 52, 69) !important;
+}
+/*解决收缩菜单文字不消失问题*/
+.el-menu--collapse span {
+  visibility: hidden;
+}
 </style>

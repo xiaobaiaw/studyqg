@@ -1,0 +1,10 @@
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (1, '1栋', '1栋', NULL);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (2, '2栋', '2栋', NULL);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (3, '1单元', '1单元', 1);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (4, '2单元', '2单元', 1);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (5, '1单元', '1单元', 2);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (6, '2单元', '2单元', 2);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (7, '101', '101', 3);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (8, '201', '201', 3);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (9, '101', '101', 4);
+INSERT INTO `building` (`id`, `label`, `value`, `pid`) VALUES (10, '201', '201', 4);

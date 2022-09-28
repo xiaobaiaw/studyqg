@@ -1,0 +1,2 @@
+INSERT INTO `wares` (`id`, `name`, `price`, `description`, `unit`, `store`, `img`, `time`) VALUES (1, '假面骑士', 999.00, NULL, '个', 1000, 'http://localhost:9090/file/a4e57b1a499a4bba926bf232cf03472f.jpeg', '2022-08-31 14:00:55');
+INSERT INTO `wares` (`id`, `name`, `price`, `description`, `unit`, `store`, `img`, `time`) VALUES (2, '迪迦', 888.00, '撒谎的会计核算科技活动看哈客户是的接口', '个', 1, 'http://localhost:9090/file/a4e57b1a499a4bba926bf232cf03472f.jpeg', '2022-08-31 14:04:01');

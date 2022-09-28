@@ -1,0 +1,10 @@
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (81, 2, 1);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (82, 2, 3);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (83, 2, 5);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (84, 2, 6);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (85, 2, 7);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (86, 2, 8);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (87, 2, 9);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (88, 2, 13);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (89, 2, 15);
+INSERT INTO `paper_question` (`id`, `paper_id`, `question_id`) VALUES (90, 2, 16);
